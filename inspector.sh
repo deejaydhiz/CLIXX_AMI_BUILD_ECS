@@ -1,13 +1,12 @@
 #!/bin/bash
-# scan_ami.sh
 
 AMI_ID=$1
 SUBNET_ID=$2
 IAM_PROFILE="ec2_instance_role" 
 REGION="us-east-1"
 
-REPORT_BUCKET="deji-stack-states"
-KMS_KEY_ARN="arn:aws:kms:us-east-1:123456789012:key/your-key-id"
+REPORT_BUCKET="deji-inspector-reports"
+KMS_KEY_ARN="arn:aws:kms:us-east-1:055081916963:key/cce0e2fa-b8a8-49ab-b7a1-3f737cd8438b"
 
 
 # 1. Launch temporary instance
@@ -29,20 +28,8 @@ echo "Waiting for Inspector v2 scan results (this may take a few minutes)..."
 # In 2026, we use the wait command for inspector2 findings
 aws inspector2 wait for-findings --resource-ids $INSTANCE_ID --region $REGION
 
-# # 3. Check for CRITICAL or HIGH findings
-# FINDINGS_COUNT=$(aws inspector2 list-findings \
-#     --filter-criteria "{\"resourceId\": [{\"comparison\": \"EQUALS\", \"value\": \"$INSTANCE_ID\"}], \"severity\": [{\"comparison\": \"EQUALS\", \"value\": \"CRITICAL\"}, {\"comparison\": \"EQUALS\", \"value\": \"HIGH\"}]}" \
-#     --query 'findings | length' --output text)
 
-# if [ "$FINDINGS_COUNT" -gt 0 ]; then
-#     echo "ERROR: Found $FINDINGS_COUNT CRITICAL/HIGH vulnerabilities."
-#     exit 1
-# else
-#     echo "SUCCESS: No CRITICAL or HIGH vulnerabilities found."
-#     exit 0
-# fi
-
-# 4. Export findings report to S3
+# 3. Export findings report to S3
 REPORT_ID=$(aws inspector2 create-findings-report \
     --report-format JSON \
     --s3-destination bucketName=$REPORT_BUCKET,keyPrefix=reports/ \

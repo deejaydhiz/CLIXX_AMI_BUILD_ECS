@@ -28,7 +28,7 @@ pipeline {
                     sh """
                     chmod +x ./inspector.sh
                     ./inspector.sh ${env.AMI_ID} subnet-0330cd347d4184bf5
-                    slackSend (color: '#ff9900ff', message: "Scanning Custom AMI with Inspector2")
+                    slackSend (color: '#e5ff00ff', message: "Scanning Custom AMI with Inspector2")
                     """
                 }
             }

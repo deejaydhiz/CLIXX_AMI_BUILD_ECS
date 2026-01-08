@@ -67,7 +67,7 @@ source "amazon-ebs" "amazon_ebs" {
   snapshot_users = "${var.aws_accounts}"
   encrypt_boot   = false
   instance_type  = "${var.aws_instance_type}"
-  
+
   launch_block_device_mappings {
     delete_on_termination = true
     device_name           = "/dev/xvda"
