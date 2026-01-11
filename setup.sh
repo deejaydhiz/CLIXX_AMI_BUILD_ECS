@@ -2,6 +2,7 @@
 sudo dnf upgrade -y
 sudo dnf install mariadb105-server php-mysqlnd php-fpm php-mysqli php-json php php-devel -y
 sudo dnf install -y nfs-utils wget git cronie httpd docker
+sudo yum install -y awscli mysql
 
 echo "Starting Services"
 sudo systemctl start mariadb crond docker 
